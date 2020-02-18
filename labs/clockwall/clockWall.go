@@ -18,14 +18,14 @@ func mustCopy(dst io.Writer, src io.Reader) {
 func main() {
 	args := os.Args[1:]
 	for _, arg := range args {
-		port := strings.Split(arg, ":")[1]
+		port := strings.Split(arg, "=")[1]
 		dialPort(port)
 	}
 	//clockWall NewYork=localhost:8010 Tokyo=localhost:8020 London=localhost:8030
 }
 
 func dialPort(port string) {
-	conn, err := net.Dial("tcp", "localhost:"+port)
+	conn, err := net.Dial("tcp", port)
 	if err != nil {
 		log.Fatal(err)
 	}

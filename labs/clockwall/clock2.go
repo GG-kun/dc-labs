@@ -3,10 +3,11 @@ package main
 
 import (
 	"flag"
-	"fmt"
 	"io"
 	"log"
 	"net"
+	"os"
+	"strings"
 	"time"
 )
 
@@ -26,14 +27,12 @@ func handleConn(c net.Conn, name string) {
 func main() {
 
 	var port = flag.String("port", "", "")
-	//var tz = flag.String("TZ", "", "")
 	flag.Parse()
-	fmt.Print(*port)
-	listenerPort("US/Eastern", *port)
+	listenerPort(strings.Replace(os.Getenv("TZ"), "-", "/", -1), *port)
 
-	/*TZ=US/Eastern    ./clock2 -port 8010 &
-	TZ=Asia/Tokyo    ./clock2 -port 8020 &
-	TZ=Europe/London ./clock2 -port 8030 &*/
+	/*TZ=US-Eastern    ./clock2 -port 8010 &
+	TZ=Asia-Tokyo    ./clock2 -port 8020 &
+	TZ=Europe-London ./clock2 -port 8030 &*/
 }
 
 func listenerPort(name, port string) {
