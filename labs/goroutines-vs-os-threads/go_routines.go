@@ -47,7 +47,7 @@ func getLines(name string) []string {
 
 	file, err := os.Open(name)
 	if err != nil {
-		log.Fatalf("failed opening file: %s", err)
+		return []string{}
 	}
 	defer file.Close()
 
