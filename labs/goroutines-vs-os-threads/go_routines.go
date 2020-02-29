@@ -16,28 +16,29 @@ func stage(input chan int, output chan int) {
 }
 
 func main() {
-	start := make(chan int)
-	var end chan int
-	lastOutput := start
-	numberStages := 1400000
-
-	for i := 0; i < numberStages; i++ {
-		newOutput := make(chan int)
-		go stage(lastOutput, newOutput)
-		lastOutput = newOutput
-		if i %100000 == 0{
+	numberStages, err := strconv.Atoi(os.Args[1])
+	if err != nil {
+		log.Fatal("Missing argument number of stages")
+	}
+	in := make(chan int)
+	a := in
+	b := make(chan int)
+	for i := 1; i < numberStages; i++ {
+		go stage(a, b)
+		a = b
+		b = make(chan int)
+		if i%100000 == 0 {
 			fmt.Println(i)
 		}
-		if i == numberStages-1 {
-			end = newOutput
-		}
 	}
-	begin := time.Now()
-	start <- 0
-	elapsed := time.Since(begin)
-	txtLines := getLines("output.txt")
-	txtLines = append(txtLines, strconv.Itoa(<-end)+" took "+elapsed.String())
-	writeFile("output.txt", txtLines)
+	out := a
+	started := time.Now()
+	in <- 1
+	v := <-out
+	elapsed := time.Since(started)
+	txtLines := getLines("go_routines.txt")
+	txtLines = append(txtLines, strconv.Itoa(v)+" took "+elapsed.String())
+	writeFile("go_routines.txt", txtLines)
 }
 
 func getLines(name string) []string {

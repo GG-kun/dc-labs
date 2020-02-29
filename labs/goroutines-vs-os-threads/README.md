@@ -15,6 +15,13 @@ How many communications per second can the program sustain?
 they're givng to the presented questions.
 - Generated reports are free format and written on any file extension (i.e. .txt, .pdf, .md, .svg, .png, .jpg, .tex)
 
+## Usage
+
+```
+go run go_routines.go <NumberOfStages>
+go run os_threads.go
+```
+
 General Requirements and Considerations
 ---------------------------------------
 - Submit only `*.go` files.
