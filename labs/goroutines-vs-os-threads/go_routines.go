@@ -21,23 +21,20 @@ func main() {
 		log.Fatal("Missing argument number of stages")
 	}
 	in := make(chan int)
-	a := in
-	b := make(chan int)
+	start := in
+	end := make(chan int)
 	for i := 1; i < numberStages; i++ {
-		go stage(a, b)
-		a = b
-		b = make(chan int)
-		if i%100000 == 0 {
-			fmt.Println(i)
-		}
+		go stage(start, end)
+		start = end
+		end = make(chan int)
 	}
-	out := a
+	out := start
 	started := time.Now()
 	in <- 1
-	v := <-out
+	val := <-out
 	elapsed := time.Since(started)
 	txtLines := getLines("go_routines.txt")
-	txtLines = append(txtLines, strconv.Itoa(v)+" took "+elapsed.String())
+	txtLines = append(txtLines, strconv.Itoa(val)+" took "+elapsed.String())
 	writeFile("go_routines.txt", txtLines)
 }
 
